@@ -425,5 +425,74 @@ Essentially, it applies the chi^2 distance function to each of the features in t
 
 ###Understanding Face Comparison, With OpenCV
 
+The `face_compare2.py` contains how I do face comparison with open CV.  It works quiet well, but I do confess it is not my most well organized piece of code.  I have not yet learned how to be elegant with image manipulation, alas, the struggles of perfection in a sea of desires and things one aspires to be perfect at.  But such is the calamity of curious minds, and it is something I am proud of, to be pulled in so many possible directions.
 
+In any event, there is a lot to unpack in that file and so I'm simply going to explain some high level steps:
+
+First we instantiate our recognizers:
+```
+recog = {}
+recog["eigen"] = cv2.face.createEigenFaceRecognizer()
+recog["fisher"] = cv2.face.createFisherFaceRecognizer()
+recog["lbph"] = cv2.face.createLBPHFaceRecognizer()
+```
+
+Notice that recently OpenCV has changed and now the face recognizers live in a seperate supplemental library.  The core of OpenCV can be found here: https://github.com/Itseez/opencv and the face recognizers can be found here: https://github.com/Itseez/opencv_contrib.  I'm not sure why they decided to move such a handy set of tools out into some contrib repo, but that is how it is.
+
+The next thing to do is normalize the pictures:
+
+normalize_cv(filename,compare,directory_of_pictures)
+
+In this case, this means making them all the same height and width, because the face comparison algorithms require this.  I'm not sure why this is the case.  
+
+Next we read in a picture and hand label it 1:
+
+```
+face = cv2.imread(new_filename,0)
+face,label = face[:, :], 1
+```
+
+And we read in a different picture with a different face and hand label it 2:
+
+```
+compare_face = cv2.imread(new_compare, 0)
+compare_face, compare_label = compare_face[:,:], 2
+```
+
+This establishes the base comparison for what will be considered a face we are searching for and a face that is different from the one we want.  Perhaps using 2 isn't the best, because the distance isn't great enough, but this is intended to be a toy example, you should feel free to tune these "magic" numbers to improve the precision of your own code.  
+
+Next we train the each recognizer on the training data:
+
+```
+for recognizer in recog.keys():
+    recog[recognizer].train(image_array,label_array)
+```
+
+And then we compare all the trained data against the directory of pictures:
+
+```
+test_images = [(np.asarray(cv2.imread(img,0)[:,:]),img) for img in test_images]
+possible_matches = []
+for t_face,name in test_images:
+    t_labels = []
+    for recognizer in recog.keys():
+        try:
+            [label, confidence] = recog[recognizer].predict(t_face)
+            possible_matches.append({"name":name,"confidence":confidence,"recognizer":recognizer})
+```
+
+Notice that we simply need to call the predict function on each image in our directory.
+
+Finally, we simply can print out all the possible matches:
+
+```
+for i in possible_matches:
+	print i
+```
+
+Running this code is fairly simple and can be accomplished with the following:
+
+`python face_compare2.py [first picture] [baseline comparison picture] [directory of pictures to search against]`
+
+Note: For this code to work from this repo, you'll need to install OpenCV from the github's I link to above.
 
