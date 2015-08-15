@@ -14,7 +14,13 @@ What I do:
 
 How you can help:
 
+Short term collaborations:
+* [Fighting Slavery - August 29th](https://www.eventbrite.com/e/science-against-slavery-hackathon-presented-by-open-data-science-odsc-tickets-17852859383)
 
+Long term collaborations:
+* [investa_gator](https://github.com/EricSchles/investa_gator_v2)
+* [wikitongues](https://github.com/wikitongues)
+* [heatseeknyc](https://github.com/heatseeknyc)
 
 ##Outline:
 Computational tools are becoming increasingly necessary in the world of social good. There is an increasing need for data science, automation, search and distributed computation. 
