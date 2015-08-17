@@ -8,9 +8,12 @@ _Eric_ _Schles_
 
 Academic: Comp Sci, Math, Econ
 What I do:
--[wikitongues](http://www.wikitongues.org/)
--[heatseeknyc](http://heatseeknyc.com/)
--demand abolition - No link, we aren't proud of the website
+
+* [wikitongues](http://www.wikitongues.org/)
+
+* [heatseeknyc](http://heatseeknyc.com/)
+
+* demand abolition - No link, we aren't proud of the website
 
 How you can help:
 
@@ -530,21 +533,27 @@ Installation:
 
 Python:
 `sudo pip install django #make sure you are installing django 1.8` 
+
 `sudo pip install pyscopg2`
 
 PostGres:
 
 `sudo apt-get update`
+
 `sudo apt-get install -y postgresql postgresql-contrib`
 
 Testing postgres install:
+
 `sudo -u postgres createuser -P USER_NAME_HERE`
+
 `sudo -u postgres createdb -O USER_NAME_HERE DATABASE_NAME_HERE`
+
 `psql -h localhost -U USER_NAME_HERE DATABASE_NAME_HERE`
 
 Adding PostGIS support:
 
 `sudo apt-get install -y postgis postgresql-9.3-postgis-2.1`
+
 `sudo -u postgres psql -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;" DATABASE_NAME_HERE`
 
 changing everything to trusted, rather than requiring authentication - DO THIS FOR LOCAL DEVELOPMENT ONLY!!!
@@ -568,7 +577,9 @@ Getting started with geodjango:
 Now we are ready to get started:
 
 `django-admin startproject geodjango`
+
 `cd geodjango`
+
 `python manage.py startapp world`
 
 Now we'll go into the settings.py file:
@@ -590,7 +601,9 @@ DATABASES = {
 Notice that we haven't created the 'geodjango'-database so we'll do that now:
 
 `sudo -u postgres createuser -P geo`
+
 `sudo -u postgres createdb -O geo geodjango`
+
 `sudo -u postgres psql -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;" geodjango`
 
 we'll also need to edit the installed aps, in the same file:
@@ -613,9 +626,13 @@ Great, now we can save and close that.
 Next we'll need some data to visualize:
 
 `mkdir world/data`
+
 `cd world/data`
+
 `wget http://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip`
+
 `unzip TM_WORLD_BORDERS-0.3.zip`
+
 `cd ../..`
 
 Now let's inspect our data so we now how our model should look - we should try to be consistent with how the data is annotated for portability and extensibility.  
@@ -662,7 +679,9 @@ We are now ready to run our first migration :)
 
 `python manage.py makemigrations`
 
+
 `python manage.py sqlmigreate world 0001`
+
 
 `python manage.py migrate`
 
@@ -697,11 +716,16 @@ I found the setup for GeoDjango to be slightly outdated and confusing and so I t
 GeoDjango Specific tutorials and examples:
 
 Basic:
+
 http://blog.mathieu-leplatre.info/geodjango-maps-with-leaflet.html
+
 http://invisibleroads.com/tutorials/geodjango-googlemaps-build.html
+
 http://davidwilson.me/2013/09/30/Colorado-Geology-GeoDjango-Tutorial/
 
+
 Advanced:
+
 http://blog.apps.chicagotribune.com/category/data-visualization/
 
 Visualizing Crime data with GIS:
@@ -711,10 +735,18 @@ http://flowingdata.com/2009/06/23/20-visualizations-to-understand-crime/
 Where to get your own data:
 
 https://data.cityofchicago.org/
+
 https://nycopendata.socrata.com/
 
+How to do Geo-Python things with other tools:
+
+https://2015.foss4g-na.org/sites/default/files/slides/Installation%20Guide_%20Spatial%20Data%20Analysis%20in%20Python.pdf
+
+
 Questions?
+
 contact: 
 
 gmail: ericschles@gmail.com
+
 twitter: @EricSchles
