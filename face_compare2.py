@@ -6,15 +6,9 @@ import os
 from sys import argv
 from PIL import Image
 import math
+
 def path_append(full_path,new_dir):
     return "/".join(full_path.split("/")[:-1])+"/"+new_dir+full_path.split("/")[-1]
-
-def median(listing):
-    if len(listing)%2 == 0:
-        middle = len(listing)/2
-        return (listing[middle-1] + listing[middle+1])/2
-    else:
-        return listing[math.floor(len(listing)/2)]
         
 
 def normalize_cv(image1,image2,compare_dir):
@@ -89,24 +83,29 @@ CONFIDENCE_THRESHOLD = 100.0
 ave_confidence = 0
 num_recognizers = 3
 recog = {}
-recog["eigen"] = cv2.face.createEigenFaceRecognizer()
-recog["fisher"] = cv2.face.createFisherFaceRecognizer()
-recog["lbph"] = cv2.face.createLBPHFaceRecognizer()
+recog["eigen"] = cv2.face.EigenFaceRecognizer_create()
+recog["fisher"] = cv2.face.FisherFaceRecognizer_create()
+recog["lbph"] = cv2.face.LBPHFaceRecognizer_create()
 
 #load the data initial file
 filename = os.path.abspath(argv[1])
 compare = os.path.abspath(argv[2])
 #normalize other faces
+base_picture_dir = argv[3] + "/"
 normalize_cv(filename,compare,argv[3])
 
-
+dirs = ["wide_dir/","long_dir/","equal_dir/"]
+dirs = [base_picture_dir+elem for elem in dirs]
 #generate test data
 
-for Dir in ["wide_dir/","long_dir/","equal_dir/"]:
+for Dir in dirs:
     new_filename = path_append(filename,Dir)
     face = cv2.imread(new_filename,0)
-    face,label = face[:, :], 1
-
+    try:
+        face,label = face[:, :], 1
+    except:
+        import code
+        code.interact(local=locals())
     #load comparison face
     new_compare = path_append(compare,Dir)
     compare_face = cv2.imread(new_compare, 0)
@@ -123,8 +122,8 @@ for Dir in ["wide_dir/","long_dir/","equal_dir/"]:
     for recognizer in recog.keys():
         recog[recognizer].train(image_array,label_array)
 
-    print Dir+"\n\n"
-    test_images = glob(argv[3]+Dir+"*")
+    print(Dir+"\n\n")
+    test_images = glob(Dir+"*")
     test_images = [(np.asarray(cv2.imread(img,0)[:,:]),img) for img in test_images]
     possible_matches = []
     for t_face,name in test_images:
@@ -145,15 +144,17 @@ for Dir in ["wide_dir/","long_dir/","equal_dir/"]:
             if m["confidence"] < minimum:
                 minimum = m["confidence"]
     minimum += epsilon
-    average /= float(len(possible_matches))
-    Median = median([m["confidence"] for m in possible_matches])
+    try:
+        average /= float(len(possible_matches))
+    except:
+        import code
+        code.interact(local=locals())
+    Median = np.median([m["confidence"] for m in possible_matches])
     for m in possible_matches:
         if m["recognizer"] == "lbph":
             if m["confidence"] == minimum or m["confidence"] < (minimum + average):
                 close_enough.append(m)
             #if m["confidence"] < Median:
             #    close_enough.append(m)
-
-    close_enough = sorted(close_enough)
     for i in close_enough:
-        print i
+        print(i)

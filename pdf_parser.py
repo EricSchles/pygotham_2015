@@ -1,9 +1,12 @@
 from subprocess import call
 from sys import argv
 import pandas as pd
+
+
 def transform(filename):
     call(["pdftotext","-layout",filename])
     return filename.split(".")[0] + ".txt"
+
 
 def segment(contents):
     relevant = []
@@ -16,6 +19,7 @@ def segment(contents):
         if start:
             relevant.append(line)
     return relevant
+
 
 def parse(relevant):
     tmp = {}
@@ -37,8 +41,9 @@ def parse(relevant):
 
 if __name__ == '__main__':
     txt_file = transform(argv[1])
-    text = open(txt_file,"r").read().decode("ascii","ignore")
-    contents = text.split("\n")
+    text = open(txt_file,"r").read().encode("utf-8","ignore")
+    text = str(text)
+    contents = text.split("\\n")
     relevant = segment(contents)
     df = parse(relevant)
     df.to_csv("results.csv")
