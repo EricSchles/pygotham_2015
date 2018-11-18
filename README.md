@@ -42,7 +42,7 @@ Right now the problem is, technology has not been applied to solving social prob
 
 The place most ripe for innovation: _The_ _local_ _government_
 
-The goal of this talk is to provide three suggestions for how you might innovate a local government agency, using free open source software, and beatifully simple python.  Most government shops are C, C++, or Java.  But they are using main frame style paradigms.  In fact, we basically used a mainframe set up at the Manhattan DA.  (I know I shutter whenever I think about it too)
+The goal of this talk is to provide three suggestions for how you might innovate a local government agency, using free open source software, and beautifully simple python.  Most government shops are C, C++, or Java.  But they are using main frame style paradigms.  In fact, we basically used a mainframe set up at the Manhattan DA.  (I know I shutter whenever I think about it too)
 
 So clearly there is room for growth.  Other things I won't mention in this talk include:  
 
